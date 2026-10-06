@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduGenie – AI Learning Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-100 transition-colors duration-300">
+ <header class="relative bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-gray-800 dark:to-gray-900 text-white text-center py-10 px-4 shadow-md">
+    <button id="dark-mode-toggle" class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-3 py-2 rounded-lg">
+      🌙 Dark Mode
+    </button>
+    <h1 class="text-3xl font-bold mb-1">🧞 EduGenie</h1>
+    <p class="text-indigo-100 text-sm">Your AI-powered learning assistant</p>
+  </header>
+
+<nav class="flex justify-center flex-wrap gap-2 bg-white dark:bg-gray-800 py-4 shadow-sm sticky top-0 z-10">
+    <button class="tab-btn active px-5 py-2 rounded-lg font-semibold text-sm bg-indigo-500 text-white" data-tab="qa">Ask a Question</button>
+    <button class="tab-btn px-5 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300" data-tab="quiz">Generate Quiz</button>
+    <button class="tab-btn px-5 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300" data-tab="summarize">Summarize Text</button>
+    <button class="tab-btn px-5 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300" data-tab="learning-path">Learning Path</button>
+    <button class="tab-btn px-5 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300" data-tab="flashcards">Flashcards</button>
+    <button class="tab-btn px-5 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300" data-tab="history">History</button>
+  </nav>
+
+  <main class="max-w-3xl mx-auto my-8 px-4">
+
+    <!-- Q&A Tab -->
+<section id="qa" class="tab-content bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+<h2 class="text-xl font-bold text-indigo-700 mb-4">Ask a Question</h2>
+      <textarea id="qa-input" rows="3" placeholder="e.g. Which is the largest ocean?"
+        class="w-full border border-gray-300 rounded-lg p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+      <button id="qa-submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg">Ask EduGenie</button>
+      <div id="qa-result" class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm leading-relaxed whitespace-pre-wrap"></div>
+    </section>
+
+    <!-- Quiz Tab -->
+<section id="quiz" class="tab-content hidden bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+    <h2 class="text-xl font-bold text-indigo-700 mb-4">Generate a Quiz</h2>
+      <input type="text" id="quiz-topic" placeholder="Topic (e.g. Pythagoras Theorem)"
+        class="w-full border border-gray-300 rounded-lg p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      <div class="flex flex-wrap gap-4 mb-3">
+        <label class="flex-1 text-sm text-gray-600">Number of Questions:
+          <input type="number" id="quiz-count" value="3" min="1" max="10"
+            class="w-full border border-gray-300 rounded-lg p-2 mt-1" />
+        </label>
+        <label class="flex-1 text-sm text-gray-600">Difficulty:
+          <select id="quiz-difficulty" class="w-full border border-gray-300 rounded-lg p-2 mt-1">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+      </div>
+      <button id="quiz-submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg">Generate Quiz</button>
+      <div id="quiz-result" class="mt-4"></div>
+    </section>
+
+    <!-- Summarize Tab -->
+<section id="summarize" class="tab-content hidden bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+    <h2 class="text-xl font-bold text-indigo-700 mb-4">Summarize Text</h2>
+      <textarea id="summarize-input" rows="8" placeholder="Paste your study text here..."
+        class="w-full border border-gray-300 rounded-lg p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+      <label class="block text-sm text-gray-600 mb-3">Summary Length:
+        <select id="summarize-length" class="w-full border border-gray-300 rounded-lg p-2 mt-1">
+          <option value="short">Short</option>
+          <option value="medium" selected>Medium</option>
+          <option value="detailed">Detailed</option>
+        </select>
+      </label>
+      <button id="summarize-submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg">Summarize</button>
+      <div id="summarize-result" class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm leading-relaxed whitespace-pre-wrap"></div>
+    </section>
+
+    <!-- Learning Path Tab -->
+<section id="learning-path" class="tab-content hidden bg-white dark:bg-gray-800 rounded-xl shadow p-6">  
+ <h2 class="text-xl font-bold text-indigo-700 mb-4">Personalized Learning Path</h2>
+      <input type="text" id="lp-topic" placeholder="Topic (e.g. SQL)"
+        class="w-full border border-gray-300 rounded-lg p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      <label class="block text-sm text-gray-600 mb-3">Current Level:
+        <select id="lp-level" class="w-full border border-gray-300 rounded-lg p-2 mt-1">
+          <option value="beginner" selected>Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </label>
+      <button id="lp-submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg">Generate Learning Path</button>
+      <div id="lp-result" class="mt-4"></div>
+    </section>
+</section>
+
+    <!-- Flashcards Tab -->
+    <section id="flashcards" class="tab-content hidden bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold text-indigo-700 dark:text-indigo-300 mb-4">Flashcard Generator</h2>
+      <input type="text" id="flashcard-topic" placeholder="Topic (e.g. Cell Biology)"
+        class="w-full border border-gray-300 rounded-lg p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      <label class="block text-sm text-gray-600 dark:text-gray-300 mb-3">Number of Cards:
+        <input type="number" id="flashcard-count" value="5" min="1" max="15"
+          class="w-full border border-gray-300 rounded-lg p-2 mt-1" />
+      </label>
+      <button id="flashcard-submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg">Generate Flashcards</button>
+      <div id="flashcard-result" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </section>
+<!-- History Tab -->
+    <section id="history" class="tab-content hidden bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-indigo-700 dark:text-indigo-300">Your History</h2>
+        <button id="clear-history" class="text-sm bg-red-100 hover:bg-red-200 text-red-600 font-semibold px-3 py-1.5 rounded-lg">Clear History</button>
+      </div>
+      <div id="history-list" class="space-y-3"></div>
+    </section>
+  </main>
+  </main>
+<footer class="bg-indigo-900 dark:bg-gray-950 text-indigo-100 dark:text-gray-300 mt-12 transition-colors duration-300">
+   <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+
+      <div>
+        <h3 class="text-white text-lg font-bold mb-2">🧞 EduGenie</h3>
+        <p class="text-sm text-indigo-200">Your AI-powered learning assistant for students, self-learners, and educators.</p>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold mb-2">Features</h4>
+        <ul class="text-sm space-y-1 text-indigo-200">
+          <li>Ask a Question</li>
+          <li>Generate Quiz</li>
+          <li>Summarize Text</li>
+          <li>Learning Path</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold mb-2">Tech Stack</h4>
+        <ul class="text-sm space-y-1 text-indigo-200">
+          <li>FastAPI (Backend)</li>
+          <li>Gemini API (AI Engine)</li>
+          <li>Tailwind CSS (UI)</li>
+          <li>Vanilla JavaScript</li>
+        </ul>
+      </div>
+
+     <div>
+        <h4 class="text-white font-semibold mb-2">Project Info</h4>
+        <ul class="text-sm space-y-1 text-indigo-200">
+          <li>Generative AI Project</li>
+          <li>Harsha Priya Parimi</li>
+          <li>Raaga Sai Sowmya Sree Mudunuru</li>
+          <li>2026</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="border-t border-indigo-800 dark:border-gray-800 text-center text-xs text-indigo-300 dark:text-gray-500 py-4">
+      © 2026 EduGenie. Built for learning, powered by AI.
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
